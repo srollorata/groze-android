@@ -7,9 +7,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -29,6 +35,17 @@ import com.groze.app.ui.theme.GrozeOnPrimary
 import com.groze.app.ui.theme.GrozePrimary
 import com.groze.app.ui.theme.GrozeSurfaceContainerLowest
 
+val CATEGORY_OPTIONS = listOf(
+    "Spices and Condiments",
+    "Meat and Poultry",
+    "Canned Goods",
+    "Seafood",
+    "Fresh Produce",
+    "Dairy",
+    "Beverages",
+    "Households"
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditVaultItemSheet(
@@ -41,6 +58,7 @@ fun AddEditVaultItemSheet(
 
     var name by remember { mutableStateOf(if (isAdd) "" else item.name) }
     var category by remember { mutableStateOf(if (isAdd) "" else item.category) }
+    var categoryExpanded by remember { mutableStateOf(false) }
     var price by remember { mutableStateOf(if (isAdd) "" else item.lastPrice.toString()) }
     var unit by remember { mutableStateOf(if (isAdd) "" else item.unit) }
 
@@ -75,14 +93,38 @@ fun AddEditVaultItemSheet(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(
-                value = category,
-                onValueChange = { category = it },
-                label = { Text("Category (e.g. Dairy, Produce)") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp)
-            )
+            ExposedDropdownMenuBox(
+                expanded = categoryExpanded,
+                onExpandedChange = { categoryExpanded = it }
+            ) {
+                OutlinedTextField(
+                    value = category,
+                    onValueChange = { category = it },
+                    label = { Text("Category") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(),
+                    trailingIcon = {
+                        Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                    },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp)
+                )
+                ExposedDropdownMenu(
+                    expanded = categoryExpanded,
+                    onDismissRequest = { categoryExpanded = false }
+                ) {
+                    CATEGORY_OPTIONS.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option) },
+                            onClick = {
+                                category = option
+                                categoryExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 

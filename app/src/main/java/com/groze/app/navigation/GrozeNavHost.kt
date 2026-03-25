@@ -26,6 +26,7 @@ import com.groze.app.ui.tripsummary.TripSummaryViewModel
 import com.groze.app.ui.tabs.PlanScreen
 import com.groze.app.ui.tabs.ShopScreen
 import com.groze.app.ui.tabs.HistoryScreen
+import com.groze.app.ui.settings.SettingsScreen
 import com.groze.app.ui.vault.VaultScreen
 import com.groze.app.ui.vault.VaultViewModel
 import com.groze.app.ui.theme.GrozeBackground
@@ -54,10 +55,10 @@ fun GrozeNavHost(startOnboarding: Boolean) {
                     onNavigate = { screen ->
                         navController.navigate(screen.route) {
                             popUpTo(Screen.Vault.route) {
-                                saveState = true
+                                saveState = false
                             }
                             launchSingleTop = true
-                            restoreState = true
+                            restoreState = false
                         }
                     }
                 )
@@ -97,6 +98,9 @@ fun GrozeNavHost(startOnboarding: Boolean) {
                         viewModel = viewModel,
                         onCreateNewCart = { tripId ->
                             navController.navigate(Screen.NewTripPlan.createRoute(tripId))
+                        },
+                        onNavigateToSettings = {
+                            navController.navigate(Screen.Settings.route)
                         }
                     )
                 }
@@ -119,6 +123,12 @@ fun GrozeNavHost(startOnboarding: Boolean) {
 
                 composable(Screen.History.route) {
                     HistoryScreen()
+                }
+
+                composable(Screen.Settings.route) {
+                    SettingsScreen(
+                        onBack = { navController.popBackStack() }
+                    )
                 }
 
                 composable(

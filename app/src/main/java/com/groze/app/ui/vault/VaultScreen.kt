@@ -65,7 +65,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun VaultScreen(
     viewModel: VaultViewModel,
-    onCreateNewCart: (Long) -> Unit
+    onCreateNewCart: (Long) -> Unit,
+    onNavigateToSettings: () -> Unit
 ) {
     val vaultItems by viewModel.vaultItems.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
@@ -111,17 +112,11 @@ fun VaultScreen(
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menu", tint = GrozePrimary)
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = GrozePrimary)
                     }
                 },
                 actions = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.Search, contentDescription = "Search", tint = GrozePrimary)
-                    }
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = GrozePrimary)
-                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = GrozeSurface.copy(alpha = 0.8f)
