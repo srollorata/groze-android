@@ -1,0 +1,227 @@
+package com.groze.app.ui.tabs
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.ReceiptLong
+import androidx.compose.material.icons.filled.TrendingDown
+import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.groze.app.data.local.entity.TripEntity
+import com.groze.app.ui.theme.GrozeBackground
+import com.groze.app.ui.theme.GrozeError
+import com.groze.app.ui.theme.GrozeOnSurface
+import com.groze.app.ui.theme.GrozeOnSurfaceVariant
+import com.groze.app.ui.theme.GrozePrimary
+import com.groze.app.ui.theme.GrozePrimaryContainer
+import com.groze.app.ui.theme.GrozeSurface
+import com.groze.app.ui.theme.GrozeSurfaceContainerLow
+import com.groze.app.ui.theme.GrozeSurfaceVariant
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HistoryScreen(
+    viewModel: HistoryViewModel = hiltViewModel()
+) {
+    val completedTrips by viewModel.completedTrips.collectAsState()
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        "History",
+                        fontWeight = FontWeight.ExtraBold,
+                        color = GrozePrimary,
+                        fontSize = 20.sp
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = GrozeBackground
+                )
+            )
+        },
+        containerColor = GrozeBackground
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(horizontal = 16.dp)
+        ) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (completedTrips.isEmpty()) {
+                // Empty State
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 48.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(80.dp)
+                                .clip(RoundedCornerShape(24.dp))
+                                .background(GrozeSurfaceContainerLow),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                Icons.Default.ReceiptLong,
+                                contentDescription = null,
+                                modifier = Modifier.size(40.dp),
+                                tint = GrozeSurfaceVariant
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            "No Trip History",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = GrozeOnSurface
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            "Completed trips will appear here",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = GrozeOnSurfaceVariant
+                        )
+                    }
+                }
+            } else {
+                Text(
+                    "Past Trips",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = GrozeOnSurface,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(completedTrips, key = { it.id }) { trip ->
+                        CompletedTripCard(trip = trip)
+                    }
+                    item { Spacer(modifier = Modifier.height(80.dp)) }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CompletedTripCard(trip: TripEntity) {
+    val dateFormat = SimpleDateFormat("EEEE, MMM dd, yyyy", Locale.getDefault())
+    val date = trip.completedAt?.let { dateFormat.format(Date(it)) } ?: "Unknown"
+
+    val difference = trip.actualTotal - trip.expectedTotal
+    val isOverBudget = difference > 0
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 2.dp,
+                shape = RoundedCornerShape(16.dp),
+                ambientColor = GrozeOnSurface.copy(alpha = 0.05f)
+            )
+            .clip(RoundedCornerShape(16.dp))
+            .background(GrozeSurfaceContainerLow)
+            .padding(16.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(GrozePrimaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    Icons.Default.CheckCircle,
+                    contentDescription = null,
+                    tint = GrozePrimary,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    date,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = GrozeOnSurface,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(
+                    "Completed",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = GrozeOnSurfaceVariant
+                )
+            }
+            Column(horizontalAlignment = Alignment.End) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        "$${String.format("%.2f", trip.actualTotal)}",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = GrozeOnSurface,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        if (isOverBudget) Icons.Default.TrendingUp else Icons.Default.TrendingDown,
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        tint = if (isOverBudget) GrozeError else GrozePrimary
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        "${if (isOverBudget) "+" else ""}$${String.format("%.2f", difference)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = if (isOverBudget) GrozeError else GrozePrimary
+                    )
+                }
+            }
+        }
+    }
+}
