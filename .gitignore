@@ -22,15 +22,6 @@ local.properties
 .DS_Store
 Thumbs.db
 
-# Documentation folders
-/onboarding/
-/active_trip/
-/trip_summary/
-/groze_vault/
-/new_trip_plan/
-/onboarding_reality_synced_shopping/
-/onboarding_vault_prices/
-/groze_tactile_wellness/
-
+# Extra files
 /groze-userflow.png
 /implementation_plan.md
