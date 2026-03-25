@@ -54,10 +54,10 @@ fun GrozeNavHost(startOnboarding: Boolean) {
                     onNavigate = { screen ->
                         navController.navigate(screen.route) {
                             popUpTo(Screen.Vault.route) {
-                                saveState = true
+                                saveState = false
                             }
                             launchSingleTop = true
-                            restoreState = true
+                            restoreState = false
                         }
                     }
                 )
