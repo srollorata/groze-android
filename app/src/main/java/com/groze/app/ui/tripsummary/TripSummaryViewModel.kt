@@ -115,6 +115,14 @@ class TripSummaryViewModel @Inject constructor(
                 }
             }
 
+            // Calculate actual total and update trip
+            val actualTotal = items.filter { it.status == CartItemStatus.CHECKED }
+                .sumOf { (it.actualPrice ?: it.plannedPrice) * it.quantity }
+            tripRepository.updateTripTotals(tripId, 0.0, actualTotal)
+            
+            // Mark trip as completed
+            tripRepository.finishTrip(tripId)
+            
             // Clear the cart
             tripRepository.clearCart(tripId)
             _synced.value = true
@@ -124,6 +132,7 @@ class TripSummaryViewModel @Inject constructor(
 
     fun dismissUpdates(onComplete: () -> Unit) {
         viewModelScope.launch {
+            tripRepository.finishTrip(tripId)
             tripRepository.clearCart(tripId)
             onComplete()
         }

@@ -68,3 +68,47 @@ val GrozeOnBackground = Color(0xFF2A3434)
 // Outline
 val GrozeOutline = Color(0xFF727D7C)
 val GrozeOutlineVariant = Color(0xFFA9B4B3)
+
+// Dark Mode Colors
+val GrozeDarkPrimary = Color(0xFFB1D4BA)
+val GrozeDarkOnPrimary = Color(0xFF1E3525)
+val GrozeDarkPrimaryContainer = Color(0xFF354B3A)
+val GrozeDarkOnPrimaryContainer = Color(0xFFCEE9D6)
+
+val GrozeDarkSecondary = Color(0xFFB9C9BE)
+val GrozeDarkOnSecondary = Color(0xFF2D332E)
+val GrozeDarkSecondaryContainer = Color(0xFF434944)
+val GrozeDarkOnSecondaryContainer = Color(0xFFDCE5DD)
+
+val GrozeDarkTertiary = Color(0xFFC1C8C3)
+val GrozeDarkOnTertiary = Color(0xFF333836)
+val GrozeDarkTertiaryContainer = Color(0xFF4A504C)
+val GrozeDarkOnTertiaryContainer = Color(0xFFEEF6EF)
+
+val GrozeDarkError = Color(0xFFFFB4AB)
+val GrozeDarkOnError = Color(0xFF690005)
+val GrozeDarkErrorContainer = Color(0xFF93000A)
+val GrozeDarkOnErrorContainer = Color(0xFFFFDAD6)
+
+val GrozeDarkBackground = Color(0xFF1A1F1E)
+val GrozeDarkOnBackground = Color(0xFFE2E3E1)
+
+val GrozeDarkSurface = Color(0xFF1A1F1E)
+val GrozeDarkOnSurface = Color(0xFFE2E3E1)
+val GrozeDarkSurfaceVariant = Color(0xFF414947)
+val GrozeDarkOnSurfaceVariant = Color(0xFFC1C9C4)
+
+val GrozeDarkSurfaceBright = Color(0xFF1A1F1E)
+val GrozeDarkSurfaceDim = Color(0xFF0F1413)
+val GrozeDarkSurfaceContainer = Color(0xFF222928)
+val GrozeDarkSurfaceContainerHigh = Color(0xFF2D3332)
+val GrozeDarkSurfaceContainerHighest = Color(0xFF383F3D)
+val GrozeDarkSurfaceContainerLow = Color(0xFF191D1C)
+val GrozeDarkSurfaceContainerLowest = Color(0xFF0F1413)
+
+val GrozeDarkOutline = Color(0xFF8B938D)
+val GrozeDarkOutlineVariant = Color(0xFF414947)
+
+val GrozeDarkInverseSurface = Color(0xFFE2E3E1)
+val GrozeDarkInverseOnSurface = Color(0xFF2A3434)
+val GrozeDarkInversePrimary = Color(0xFF4C6455)
