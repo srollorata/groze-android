@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,7 +30,6 @@ import com.groze.app.ui.tabs.HistoryScreen
 import com.groze.app.ui.settings.SettingsScreen
 import com.groze.app.ui.vault.VaultScreen
 import com.groze.app.ui.vault.VaultViewModel
-import com.groze.app.ui.theme.GrozeBackground
 
 @Composable
 fun GrozeNavHost(startOnboarding: Boolean) {
@@ -47,7 +47,7 @@ fun GrozeNavHost(startOnboarding: Boolean) {
     )
 
     Scaffold(
-        containerColor = GrozeBackground,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             if (showBottomNav) {
                 BottomNavBar(

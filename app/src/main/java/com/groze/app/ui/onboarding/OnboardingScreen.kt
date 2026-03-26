@@ -37,12 +37,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.groze.app.ui.theme.GrozePrimary
-import com.groze.app.ui.theme.GrozePrimaryDim
-import com.groze.app.ui.theme.GrozeOnPrimary
-import com.groze.app.ui.theme.GrozeSurfaceContainerLowest
-import com.groze.app.ui.theme.GrozeOutlineVariant
-import com.groze.app.ui.theme.GrozePrimaryContainer
 import kotlinx.coroutines.launch
 
 data class OnboardingPage(
@@ -123,9 +117,9 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                         .clip(CircleShape)
                         .background(
                             if (index == pagerState.currentPage)
-                                GrozePrimary
+                                MaterialTheme.colorScheme.primary
                             else
-                                GrozeOutlineVariant.copy(alpha = 0.4f)
+                                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
                         )
                 )
             }
@@ -149,8 +143,8 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                 .height(56.dp),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = GrozePrimary,
-                contentColor = GrozeOnPrimary
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             )
         ) {
             Text(
@@ -183,7 +177,7 @@ private fun OnboardingPageContent(page: OnboardingPage) {
                 .fillMaxWidth(0.7f)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(32.dp))
-                .background(GrozeSurfaceContainerLowest),
+                .background(MaterialTheme.colorScheme.surfaceContainerLowest),
             contentAlignment = Alignment.Center
         ) {
             // Subtle gradient overlay
@@ -193,8 +187,8 @@ private fun OnboardingPageContent(page: OnboardingPage) {
                     .background(
                         Brush.linearGradient(
                             colors = listOf(
-                                GrozePrimaryContainer.copy(alpha = 0.2f),
-                                GrozeSurfaceContainerLowest.copy(alpha = 0f)
+                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f),
+                                MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0f)
                             )
                         )
                     )
@@ -203,7 +197,7 @@ private fun OnboardingPageContent(page: OnboardingPage) {
                 imageVector = page.icon,
                 contentDescription = page.title,
                 modifier = Modifier.size(96.dp),
-                tint = GrozePrimary
+                tint = MaterialTheme.colorScheme.primary
             )
         }
 

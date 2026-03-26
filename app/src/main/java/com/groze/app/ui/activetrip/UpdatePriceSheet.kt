@@ -31,7 +31,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.groze.app.data.local.entity.CartItemEntity
-import com.groze.app.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +45,7 @@ fun UpdatePriceSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = GrozeSurfaceContainerLowest,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
     ) {
         Column(
@@ -59,7 +58,7 @@ fun UpdatePriceSheet(
                 "Update Price",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.ExtraBold,
-                color = GrozeOnSurface
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -67,7 +66,7 @@ fun UpdatePriceSheet(
             Text(
                 "Adjust the actual shelf price for ${item.name}",
                 style = MaterialTheme.typography.bodyMedium,
-                color = GrozeOnSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -76,7 +75,7 @@ fun UpdatePriceSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
-                    .background(GrozeSurfaceContainerHigh)
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                     .padding(16.dp),
                 verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
             ) {
@@ -84,7 +83,7 @@ fun UpdatePriceSheet(
                     "$",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
-                    color = GrozeOnSurface
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 TextField(
                     value = priceText,
@@ -92,7 +91,7 @@ fun UpdatePriceSheet(
                     modifier = Modifier.weight(1f),
                     textStyle = MaterialTheme.typography.headlineMedium.copy(
                         fontWeight = FontWeight.ExtraBold,
-                        color = GrozePrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         textAlign = androidx.compose.ui.text.style.TextAlign.End
                     ),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -118,8 +117,8 @@ fun UpdatePriceSheet(
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = GrozePrimary,
-                    contentColor = GrozeOnPrimary
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 )
             ) {
                 Text("Confirm Price", fontWeight = FontWeight.Bold)

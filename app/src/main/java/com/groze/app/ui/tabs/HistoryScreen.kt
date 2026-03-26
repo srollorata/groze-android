@@ -39,15 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.groze.app.data.local.entity.TripEntity
-import com.groze.app.ui.theme.GrozeBackground
-import com.groze.app.ui.theme.GrozeError
-import com.groze.app.ui.theme.GrozeOnSurface
-import com.groze.app.ui.theme.GrozeOnSurfaceVariant
-import com.groze.app.ui.theme.GrozePrimary
-import com.groze.app.ui.theme.GrozePrimaryContainer
-import com.groze.app.ui.theme.GrozeSurface
-import com.groze.app.ui.theme.GrozeSurfaceContainerLow
-import com.groze.app.ui.theme.GrozeSurfaceVariant
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -66,16 +57,16 @@ fun HistoryScreen(
                     Text(
                         "History",
                         fontWeight = FontWeight.ExtraBold,
-                        color = GrozePrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = GrozeBackground
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             )
         },
-        containerColor = GrozeBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -100,27 +91,27 @@ fun HistoryScreen(
                             modifier = Modifier
                                 .size(80.dp)
                                 .clip(RoundedCornerShape(24.dp))
-                                .background(GrozeSurfaceContainerLow),
+                                .background(MaterialTheme.colorScheme.surfaceContainerLow),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 Icons.Default.ReceiptLong,
                                 contentDescription = null,
                                 modifier = Modifier.size(40.dp),
-                                tint = GrozeSurfaceVariant
+                                tint = MaterialTheme.colorScheme.surfaceVariant
                             )
                         }
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             "No Trip History",
                             style = MaterialTheme.typography.titleMedium,
-                            color = GrozeOnSurface
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             "Completed trips will appear here",
                             style = MaterialTheme.typography.bodySmall,
-                            color = GrozeOnSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -128,7 +119,7 @@ fun HistoryScreen(
                 Text(
                     "Past Trips",
                     style = MaterialTheme.typography.titleMedium,
-                    color = GrozeOnSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold
                 )
                 Spacer(modifier = Modifier.height(12.dp))
@@ -160,10 +151,10 @@ private fun CompletedTripCard(trip: TripEntity) {
             .shadow(
                 elevation = 2.dp,
                 shape = RoundedCornerShape(16.dp),
-                ambientColor = GrozeOnSurface.copy(alpha = 0.05f)
+                ambientColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f)
             )
             .clip(RoundedCornerShape(16.dp))
-            .background(GrozeSurfaceContainerLow)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(16.dp)
     ) {
         Row(
@@ -174,13 +165,13 @@ private fun CompletedTripCard(trip: TripEntity) {
                 modifier = Modifier
                     .size(40.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(GrozePrimaryContainer),
+                    .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     Icons.Default.CheckCircle,
                     contentDescription = null,
-                    tint = GrozePrimary,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -189,13 +180,13 @@ private fun CompletedTripCard(trip: TripEntity) {
                 Text(
                     date,
                     style = MaterialTheme.typography.titleMedium,
-                    color = GrozeOnSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
                     "Completed",
                     style = MaterialTheme.typography.bodySmall,
-                    color = GrozeOnSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Column(horizontalAlignment = Alignment.End) {
@@ -203,7 +194,7 @@ private fun CompletedTripCard(trip: TripEntity) {
                     Text(
                         "$${String.format("%.2f", trip.actualTotal)}",
                         style = MaterialTheme.typography.titleMedium,
-                        color = GrozeOnSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -212,13 +203,13 @@ private fun CompletedTripCard(trip: TripEntity) {
                         if (isOverBudget) Icons.Default.TrendingUp else Icons.Default.TrendingDown,
                         contentDescription = null,
                         modifier = Modifier.size(14.dp),
-                        tint = if (isOverBudget) GrozeError else GrozePrimary
+                        tint = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         "${if (isOverBudget) "+" else ""}$${String.format("%.2f", difference)}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = if (isOverBudget) GrozeError else GrozePrimary
+                        color = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                     )
                 }
             }

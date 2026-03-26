@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -27,10 +28,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.groze.app.ui.theme.GrozeOnSurfaceVariant
-import com.groze.app.ui.theme.GrozePrimary
-import com.groze.app.ui.theme.GrozePrimaryContainer
-import com.groze.app.ui.theme.GrozeSurface
 
 @Composable
 fun BottomNavBar(
@@ -54,7 +51,7 @@ fun BottomNavBar(
                 ambientColor = Color.Black.copy(alpha = 0.04f)
             )
             .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
-            .background(GrozeSurface.copy(alpha = 0.95f))
+            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.95f))
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         NavigationBar(
@@ -84,11 +81,11 @@ fun BottomNavBar(
                         )
                     },
                     colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = GrozePrimary,
-                        selectedTextColor = GrozePrimary,
-                        indicatorColor = GrozePrimaryContainer,
-                        unselectedIconColor = GrozeOnSurfaceVariant.copy(alpha = 0.7f),
-                        unselectedTextColor = GrozeOnSurfaceVariant.copy(alpha = 0.7f)
+                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        selectedTextColor = MaterialTheme.colorScheme.primary,
+                        indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                     )
                 )
             }
