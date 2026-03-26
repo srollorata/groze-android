@@ -31,9 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.groze.app.data.local.entity.VaultItemEntity
-import com.groze.app.ui.theme.GrozeOnPrimary
-import com.groze.app.ui.theme.GrozePrimary
-import com.groze.app.ui.theme.GrozeSurfaceContainerLowest
 
 val CATEGORY_OPTIONS = listOf(
     "Spices and Condiments",
@@ -65,7 +62,7 @@ fun AddEditVaultItemSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = GrozeSurfaceContainerLowest,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
     ) {
         Column(
@@ -161,8 +158,8 @@ fun AddEditVaultItemSheet(
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = GrozePrimary,
-                    contentColor = GrozeOnPrimary
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 enabled = name.isNotBlank()
             ) {

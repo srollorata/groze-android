@@ -51,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.groze.app.data.local.entity.CartItemEntity
 import com.groze.app.data.local.entity.CartItemStatus
-import com.groze.app.ui.theme.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,22 +75,22 @@ fun ActiveTripScreen(
                     Text(
                         "Active Trip",
                         fontWeight = FontWeight.ExtraBold,
-                        color = GrozePrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 18.sp
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onClose) {
-                        Icon(Icons.Default.Close, contentDescription = "Close", tint = GrozePrimary)
+                        Icon(Icons.Default.Close, contentDescription = "Close", tint = MaterialTheme.colorScheme.primary)
                     }
                 },
                 actions = {
                     IconButton(onClick = { }) {
-                        Icon(Icons.Default.Search, contentDescription = "Search", tint = GrozePrimary)
+                        Icon(Icons.Default.Search, contentDescription = "Search", tint = MaterialTheme.colorScheme.primary)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = GrozeSurface.copy(alpha = 0.8f)
+                    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
                 )
             )
         },
@@ -99,7 +98,7 @@ fun ActiveTripScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(GrozeSurface.copy(alpha = 0.9f))
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
                     .padding(horizontal = 16.dp, vertical = 12.dp)
                     .padding(bottom = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -111,9 +110,9 @@ fun ActiveTripScreen(
                     modifier = Modifier
                         .size(56.dp)
                         .clip(RoundedCornerShape(16.dp))
-                        .background(GrozeSurfaceContainerHigh)
+                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add item", tint = GrozeOnSurface)
+                    Icon(Icons.Default.Add, contentDescription = "Add item", tint = MaterialTheme.colorScheme.onSurface)
                 }
 
                 // Finish Trip button
@@ -129,8 +128,8 @@ fun ActiveTripScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = GrozePrimary,
-                        contentColor = GrozeOnPrimary
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
                     Icon(Icons.Default.ReceiptLong, contentDescription = null)
@@ -139,7 +138,7 @@ fun ActiveTripScreen(
                 }
             }
         },
-        containerColor = GrozeBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -173,12 +172,12 @@ fun ActiveTripScreen(
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 1.sp,
-                            color = GrozeOnSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
                             "${items.size} items",
                             fontSize = 12.sp,
-                            color = GrozeOutline
+                            color = MaterialTheme.colorScheme.outline
                         )
                     }
                 }
@@ -229,7 +228,7 @@ fun PlanOverviewCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(GrozeSurfaceContainerLow)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(24.dp)
     ) {
         Row(
@@ -243,21 +242,21 @@ fun PlanOverviewCard(
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Medium,
                     letterSpacing = 1.sp,
-                    color = GrozeOnSurfaceVariant.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     "Plan Overview",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color = GrozeOnSurface
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
             Text(
                 "$checkedItems of $totalItems items",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = GrozePrimary
+                color = MaterialTheme.colorScheme.primary
             )
         }
 
@@ -272,7 +271,7 @@ fun PlanOverviewCard(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(GrozeSurfaceContainerLowest)
+                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                     .padding(16.dp)
             ) {
                 Text(
@@ -280,14 +279,14 @@ fun PlanOverviewCard(
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 1.sp,
-                    color = GrozeOnSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     "$${String.format("%.2f", expectedTotal)}",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = GrozeOnSurface
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
 
@@ -296,7 +295,7 @@ fun PlanOverviewCard(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(GrozePrimaryContainer)
+                    .background(MaterialTheme.colorScheme.primaryContainer)
                     .padding(16.dp)
             ) {
                 Text(
@@ -304,14 +303,14 @@ fun PlanOverviewCard(
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 1.sp,
-                    color = GrozeOnPrimaryContainer
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     "$${String.format("%.2f", actualTotal)}",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    color = GrozeOnPrimaryContainer
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
         }
@@ -336,14 +335,14 @@ fun ActiveItemCard(
             .clip(RoundedCornerShape(16.dp))
             .background(
                 when {
-                    isChecked -> GrozePrimaryContainer
-                    isSkipped -> GrozeSurfaceContainerLowest.copy(alpha = 0.5f)
-                    else -> GrozeSurfaceContainerLowest
+                    isChecked -> MaterialTheme.colorScheme.primaryContainer
+                    isSkipped -> MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.5f)
+                    else -> MaterialTheme.colorScheme.surfaceContainerLowest
                 }
             )
             .then(
                 if (item.isAdHoc) Modifier
-                    .background(GrozeSurfaceContainerLowest)
+                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                 else Modifier
             )
             .alpha(if (isSkipped) 0.5f else 1f)
@@ -356,8 +355,8 @@ fun ActiveItemCard(
                 .size(48.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .background(
-                    if (item.isAdHoc) GrozeSecondaryContainer.copy(alpha = 0.3f)
-                    else GrozeSurfaceContainerHigh
+                    if (item.isAdHoc) MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)
+                    else MaterialTheme.colorScheme.surfaceContainerHigh
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -365,7 +364,7 @@ fun ActiveItemCard(
                 Icon(
                     Icons.Default.AddShoppingCart,
                     contentDescription = null,
-                    tint = GrozeSecondary,
+                    tint = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -379,7 +378,7 @@ fun ActiveItemCard(
                 Text(
                     item.name,
                     fontWeight = FontWeight.Bold,
-                    color = if (isChecked) GrozeOnPrimaryContainer else GrozeOnSurface,
+                    color = if (isChecked) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
                     textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
                     modifier = Modifier.alpha(if (isChecked) 0.6f else 1f)
                 )
@@ -389,10 +388,10 @@ fun ActiveItemCard(
                         "NEW",
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
-                        color = GrozeOnSecondaryFixed,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         modifier = Modifier
                             .clip(RoundedCornerShape(50))
-                            .background(GrozeSecondaryContainer)
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
                             .padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                 }
@@ -405,7 +404,7 @@ fun ActiveItemCard(
                         append("$${String.format("%.2f", item.actualPrice ?: item.plannedPrice)}")
                     },
                     fontSize = 11.sp,
-                    color = GrozeOnSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 if (priceChanged) {
                     Spacer(modifier = Modifier.width(8.dp))
@@ -413,10 +412,10 @@ fun ActiveItemCard(
                         "${if (priceDelta > 0) "+" else ""}$${String.format("%.2f", priceDelta)}",
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
-                        color = GrozeError,
+                        color = MaterialTheme.colorScheme.error,
                         modifier = Modifier
                             .clip(RoundedCornerShape(50))
-                            .background(GrozeErrorContainer.copy(alpha = 0.2f))
+                            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.2f))
                             .padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                 }
@@ -435,7 +434,7 @@ fun ActiveItemCard(
                         Icon(
                             Icons.Default.Sell,
                             contentDescription = "Update price",
-                            tint = GrozeOnSurfaceVariant,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -448,14 +447,14 @@ fun ActiveItemCard(
                         .size(48.dp)
                         .clip(CircleShape)
                         .then(
-                            if (isChecked) Modifier.background(GrozePrimary)
+                            if (isChecked) Modifier.background(MaterialTheme.colorScheme.primary)
                             else Modifier
                         )
                 ) {
                     Icon(
                         if (isChecked) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
                         contentDescription = if (isChecked) "Uncheck" else "Check",
-                        tint = if (isChecked) GrozeOnPrimary else GrozeOutlineVariant
+                        tint = if (isChecked) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.outlineVariant
                     )
                 }
             }
@@ -463,7 +462,7 @@ fun ActiveItemCard(
             Icon(
                 Icons.Default.Block,
                 contentDescription = "Skipped",
-                tint = GrozeOnSurfaceVariant,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(24.dp)
             )
         }

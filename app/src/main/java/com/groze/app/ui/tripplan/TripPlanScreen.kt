@@ -1,6 +1,7 @@
 package com.groze.app.ui.tripplan
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,7 +52,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.groze.app.data.local.entity.VaultItemEntity
-import com.groze.app.ui.theme.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,7 +79,7 @@ fun TripPlanScreen(
                     Text(
                         "New Trip Plan",
                         fontWeight = FontWeight.ExtraBold,
-                        color = GrozePrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 18.sp
                     )
                 },
@@ -88,12 +88,12 @@ fun TripPlanScreen(
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = GrozePrimary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = GrozeSurface.copy(alpha = 0.8f)
+                    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
                 )
             )
         },
@@ -105,9 +105,9 @@ fun TripPlanScreen(
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(
-                                GrozeBackground.copy(alpha = 0f),
-                                GrozeBackground,
-                                GrozeBackground
+                                MaterialTheme.colorScheme.background.copy(alpha = 0f),
+                                MaterialTheme.colorScheme.background,
+                                MaterialTheme.colorScheme.background
                             )
                         )
                     )
@@ -121,7 +121,7 @@ fun TripPlanScreen(
                         Text(
                             "Expected: $${String.format("%.2f", expectedTotal)}",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = GrozeOnSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(start = 4.dp)
                         )
 
@@ -137,8 +137,8 @@ fun TripPlanScreen(
                                 .height(56.dp),
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = GrozePrimary,
-                                contentColor = GrozeOnPrimary
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
                             )
                         ) {
                             Icon(Icons.Default.ShoppingCart, contentDescription = null)
@@ -148,13 +148,13 @@ fun TripPlanScreen(
                             Box(
                                 modifier = Modifier
                                     .clip(CircleShape)
-                                    .background(GrozeOnPrimary)
+                                    .background(MaterialTheme.colorScheme.onPrimary)
                                     .padding(horizontal = 8.dp, vertical = 4.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     "$cartItemCount",
-                                    color = GrozePrimary,
+                                    color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.ExtraBold,
                                     fontSize = 12.sp
                                 )
@@ -169,8 +169,8 @@ fun TripPlanScreen(
                             .height(56.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = GrozeSurfaceContainerHigh,
-                            contentColor = GrozeOnSurfaceVariant
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         enabled = false
                     ) {
@@ -181,7 +181,7 @@ fun TripPlanScreen(
                 }
             }
         },
-        containerColor = GrozeBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -195,16 +195,16 @@ fun TripPlanScreen(
                 TextField(
                     value = searchQuery,
                     onValueChange = viewModel::onSearchQueryChanged,
-                    placeholder = { Text("Search Vault...", color = GrozeOnSurfaceVariant.copy(alpha = 0.6f)) },
+                    placeholder = { Text("Search Vault...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
                     leadingIcon = {
-                        Icon(Icons.Default.Search, contentDescription = null, tint = GrozeOnSurfaceVariant)
+                        Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(16.dp)),
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = GrozeSurfaceContainerHigh,
-                        unfocusedContainerColor = GrozeSurfaceContainerHigh,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
                     ),
@@ -235,16 +235,16 @@ fun TripPlanScreen(
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 1.5.sp,
-                            color = GrozeOnSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
                             "${vaultResults.size} ITEMS FOUND",
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = GrozeOnSurfaceVariant,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier
                                 .clip(RoundedCornerShape(50))
-                                .background(GrozeSurfaceContainerHighest)
+                                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
                                 .padding(horizontal = 8.dp, vertical = 4.dp)
                         )
                     }
@@ -269,7 +269,7 @@ fun TripPlanScreen(
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 1.5.sp,
-                        color = GrozeOnSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -279,11 +279,11 @@ fun TripPlanScreen(
                                 suggestion,
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(50))
-                                    .background(GrozeSecondaryContainer)
+                                    .background(MaterialTheme.colorScheme.secondaryContainer)
                                     .padding(horizontal = 20.dp, vertical = 10.dp),
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = GrozeOnSecondaryFixed
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                         }
                     }
@@ -319,7 +319,8 @@ fun AddNewItemCard(searchQuery: String, onAdd: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(GrozePrimaryContainer.copy(alpha = 0.4f))
+            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f))
+            .clickable(onClick = onAdd)
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -327,10 +328,10 @@ fun AddNewItemCard(searchQuery: String, onAdd: () -> Unit) {
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(GrozePrimary),
+                .background(MaterialTheme.colorScheme.primary),
             contentAlignment = Alignment.Center
         ) {
-            Icon(Icons.Default.Add, contentDescription = null, tint = GrozeOnPrimary)
+            Icon(Icons.Default.Add, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
         }
         Spacer(modifier = Modifier.width(16.dp))
         Column {
@@ -339,7 +340,7 @@ fun AddNewItemCard(searchQuery: String, onAdd: () -> Unit) {
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.5.sp,
-                color = GrozeOnPrimaryContainer.copy(alpha = 0.7f)
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
@@ -349,7 +350,7 @@ fun AddNewItemCard(searchQuery: String, onAdd: () -> Unit) {
                     append(" as new item")
                 },
                 fontWeight = FontWeight.Bold,
-                color = GrozeOnPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
     }
@@ -365,7 +366,7 @@ fun VaultMatchCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(GrozeSurfaceContainerLowest)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -374,13 +375,13 @@ fun VaultMatchCard(
             modifier = Modifier
                 .size(56.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(GrozeSurfaceContainerHigh),
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 Icons.Default.ShoppingCart,
                 contentDescription = null,
-                tint = GrozePrimary,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -391,12 +392,12 @@ fun VaultMatchCard(
             Text(
                 item.name,
                 fontWeight = FontWeight.Bold,
-                color = GrozeOnSurface
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 "${item.unit} • ${item.category}",
                 fontSize = 12.sp,
-                color = GrozeOnSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
@@ -407,14 +408,14 @@ fun VaultMatchCard(
                 .size(48.dp)
                 .clip(CircleShape)
                 .background(
-                    if (alreadyInCart) GrozePrimaryContainer
-                    else GrozeSurfaceContainerHigh
+                    if (alreadyInCart) MaterialTheme.colorScheme.primaryContainer
+                    else MaterialTheme.colorScheme.surfaceContainerHigh
                 )
         ) {
             Icon(
                 Icons.Default.Add,
                 contentDescription = "Add to cart",
-                tint = if (alreadyInCart) GrozePrimary.copy(alpha = 0.5f) else GrozePrimary
+                tint = if (alreadyInCart) MaterialTheme.colorScheme.primary.copy(alpha = 0.5f) else MaterialTheme.colorScheme.primary
             )
         }
     }

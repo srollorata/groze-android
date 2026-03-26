@@ -47,7 +47,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.groze.app.ui.theme.*
 import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,22 +64,22 @@ fun TripSummaryScreen(
                     Text(
                         "Trip Summary",
                         fontWeight = FontWeight.ExtraBold,
-                        color = GrozePrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 18.sp
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, contentDescription = "Close", tint = GrozePrimary)
+                        Icon(Icons.Default.Close, contentDescription = "Close", tint = MaterialTheme.colorScheme.primary)
                     }
                 },
                 actions = {
                     IconButton(onClick = { }) {
-                        Icon(Icons.Default.Share, contentDescription = "Share", tint = GrozePrimary)
+                        Icon(Icons.Default.Share, contentDescription = "Share", tint = MaterialTheme.colorScheme.primary)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = GrozeSurface.copy(alpha = 0.8f)
+                    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
                 )
             )
         },
@@ -88,7 +87,7 @@ fun TripSummaryScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(GrozeSurface.copy(alpha = 0.9f))
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
                     .padding(horizontal = 24.dp)
                     .padding(bottom = 32.dp, top = 12.dp)
             ) {
@@ -99,8 +98,8 @@ fun TripSummaryScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = GrozePrimary,
-                        contentColor = GrozeOnPrimary
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
                     Text("Confirm Updates", fontWeight = FontWeight.Bold, fontSize = 16.sp)
@@ -115,12 +114,12 @@ fun TripSummaryScreen(
                     Text(
                         "Dismiss Updates",
                         fontWeight = FontWeight.SemiBold,
-                        color = GrozeOnSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         },
-        containerColor = GrozeBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -141,20 +140,20 @@ fun TripSummaryScreen(
                             .weight(1f)
                             .height(160.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(GrozeSurfaceContainerLow)
+                            .background(MaterialTheme.colorScheme.surfaceContainerLow)
                             .padding(20.dp),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
                             "Original Plan",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = GrozeOnSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
                             "$${String.format("%.2f", uiState.originalPlan)}",
                             fontSize = 28.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            color = GrozeOnSurface
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
@@ -164,21 +163,21 @@ fun TripSummaryScreen(
                             .weight(1f)
                             .height(160.dp)
                             .clip(RoundedCornerShape(20.dp))
-                            .background(GrozePrimaryContainer)
+                            .background(MaterialTheme.colorScheme.primaryContainer)
                             .padding(20.dp),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
                             "Actual Spend",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = GrozeOnPrimaryContainer
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Column {
                             Text(
                                 "$${String.format("%.2f", uiState.actualSpend)}",
                                 fontSize = 28.sp,
                                 fontWeight = FontWeight.ExtraBold,
-                                color = GrozeOnPrimaryContainer
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                             if (uiState.percentChange != 0.0) {
                                 Row(
@@ -189,14 +188,14 @@ fun TripSummaryScreen(
                                         Icons.Default.TrendingUp,
                                         contentDescription = null,
                                         modifier = Modifier.size(14.dp),
-                                        tint = GrozeOnPrimaryContainer
+                                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
                                     Spacer(modifier = Modifier.width(4.dp))
                                     Text(
                                         "${String.format("%.1f", abs(uiState.percentChange))}% ${if (uiState.percentChange > 0) "increase" else "decrease"}",
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.SemiBold,
-                                        color = GrozeOnPrimaryContainer
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
                                 }
                             }
@@ -217,17 +216,17 @@ fun TripSummaryScreen(
                             "Price Updates",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
-                            color = GrozeOnSurface
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
                             "${uiState.deltas.size} CHANGES",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 1.sp,
-                            color = GrozeOnSecondaryContainer,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
                             modifier = Modifier
                                 .clip(RoundedCornerShape(50))
-                                .background(GrozeSecondaryContainer)
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
                                 .padding(horizontal = 10.dp, vertical = 4.dp)
                         )
                     }
@@ -245,21 +244,21 @@ fun TripSummaryScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(16.dp))
-                        .background(GrozeSecondaryContainer.copy(alpha = 0.4f))
+                        .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f))
                         .padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         Icons.Default.Sync,
                         contentDescription = null,
-                        tint = GrozePrimary,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         "Changes are ready to sync with your Vault.",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = GrozeOnSecondaryFixedVariant
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
             }
@@ -279,7 +278,7 @@ fun DeltaCard(delta: TripDelta) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
-            .background(GrozeSurfaceContainerLowest)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .alpha(if (isSkipped) 0.6f else 1f)
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -291,9 +290,9 @@ fun DeltaCard(delta: TripDelta) {
                 .clip(RoundedCornerShape(12.dp))
                 .background(
                     when {
-                        isNew -> GrozeSecondaryContainer.copy(alpha = 0.5f)
-                        isSkipped -> GrozeSurfaceVariant
-                        else -> GrozeSurfaceContainerLow
+                        isNew -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
+                        isSkipped -> MaterialTheme.colorScheme.surfaceVariant
+                        else -> MaterialTheme.colorScheme.surfaceContainerLow
                     }
                 ),
             contentAlignment = Alignment.Center
@@ -305,7 +304,7 @@ fun DeltaCard(delta: TripDelta) {
                     else -> Icons.Default.LocalDrink
                 },
                 contentDescription = null,
-                tint = if (isSkipped) GrozeOnSurfaceVariant else GrozePrimary,
+                tint = if (isSkipped) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -318,7 +317,7 @@ fun DeltaCard(delta: TripDelta) {
                 Text(
                     delta.item.name,
                     fontWeight = FontWeight.Bold,
-                    color = GrozeOnSurface
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 if (isNew) {
                     Spacer(modifier = Modifier.width(8.dp))
@@ -326,10 +325,10 @@ fun DeltaCard(delta: TripDelta) {
                         "NEW",
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
-                        color = GrozeOnTertiaryContainer,
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                         modifier = Modifier
                             .clip(RoundedCornerShape(50))
-                            .background(GrozeTertiaryContainer)
+                            .background(MaterialTheme.colorScheme.tertiaryContainer)
                             .padding(horizontal = 6.dp, vertical = 2.dp)
                     )
                 }
@@ -341,7 +340,7 @@ fun DeltaCard(delta: TripDelta) {
                     else -> "${delta.item.unit} • ${delta.item.category}"
                 },
                 fontSize = 12.sp,
-                color = GrozeOnSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
@@ -351,14 +350,14 @@ fun DeltaCard(delta: TripDelta) {
                 Text(
                     "$${String.format("%.2f", delta.item.plannedPrice)}",
                     fontSize = 12.sp,
-                    color = GrozeOnSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textDecoration = TextDecoration.LineThrough
                 )
                 Text(
                     "$${String.format("%.2f", delta.item.actualPrice ?: delta.item.plannedPrice)}",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = GrozeError
+                    color = MaterialTheme.colorScheme.error
                 )
             } else {
                 Text(
@@ -366,8 +365,8 @@ fun DeltaCard(delta: TripDelta) {
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = when {
-                        isSkipped -> GrozeOnSurfaceVariant
-                        else -> GrozePrimary
+                        isSkipped -> MaterialTheme.colorScheme.onSurfaceVariant
+                        else -> MaterialTheme.colorScheme.primary
                     }
                 )
             }

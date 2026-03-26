@@ -58,7 +58,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.groze.app.data.local.entity.VaultItemEntity
-import com.groze.app.ui.theme.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,7 +81,7 @@ fun VaultScreen(
                         Text(
                             "Groze",
                             fontWeight = FontWeight.ExtraBold,
-                            color = GrozePrimary,
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = 20.sp
                         )
                         Spacer(modifier = Modifier.width(12.dp))
@@ -90,7 +89,7 @@ fun VaultScreen(
                         Row(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(50))
-                                .background(GrozeSurfaceContainerLow)
+                                .background(MaterialTheme.colorScheme.surfaceContainerLow)
                                 .padding(horizontal = 10.dp, vertical = 4.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -98,7 +97,7 @@ fun VaultScreen(
                                 Icons.Default.Sync,
                                 contentDescription = null,
                                 modifier = Modifier.size(12.dp),
-                                tint = GrozePrimary
+                                tint = MaterialTheme.colorScheme.primary
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
@@ -106,20 +105,20 @@ fun VaultScreen(
                                 fontSize = 9.sp,
                                 fontWeight = FontWeight.Bold,
                                 letterSpacing = 1.sp,
-                                color = GrozeOnSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = GrozePrimary)
+                        Icon(Icons.Default.Settings, contentDescription = "Settings", tint = MaterialTheme.colorScheme.primary)
                     }
                 },
                 actions = {
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = GrozeSurface.copy(alpha = 0.8f)
+                    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
                 )
             )
         },
@@ -131,8 +130,8 @@ fun VaultScreen(
                         onCreateNewCart(tripId)
                     }
                 },
-                containerColor = GrozePrimary,
-                contentColor = GrozeOnPrimary,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 shape = RoundedCornerShape(24.dp),
                 modifier = Modifier.padding(bottom = 8.dp)
             ) {
@@ -141,7 +140,7 @@ fun VaultScreen(
                 Text("Create New Cart", fontWeight = FontWeight.Bold)
             }
         },
-        containerColor = GrozeBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -156,13 +155,13 @@ fun VaultScreen(
                     Text(
                         "Vault",
                         style = MaterialTheme.typography.headlineLarge,
-                        color = GrozeOnSurface
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         "Your curated collection of kitchen essentials and recurring purchases.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = GrozeOnSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -175,18 +174,18 @@ fun VaultScreen(
                     placeholder = {
                         Text(
                             "Search your essentials...",
-                            color = GrozeOutline
+                            color = MaterialTheme.colorScheme.outline
                         )
                     },
                     leadingIcon = {
-                        Icon(Icons.Default.Search, contentDescription = null, tint = GrozeOutline)
+                        Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.outline)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(16.dp)),
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = GrozeSurfaceContainerHigh,
-                        unfocusedContainerColor = GrozeSurfaceContainerHigh,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
                     ),
@@ -207,13 +206,13 @@ fun VaultScreen(
                             Icons.Default.Inventory2,
                             contentDescription = null,
                             modifier = Modifier.size(48.dp),
-                            tint = GrozeOutlineVariant
+                            tint = MaterialTheme.colorScheme.outlineVariant
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             "Your vault is empty. Tap + to add your first item.",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = GrozeOnSurfaceVariant.copy(alpha = 0.6f),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                             fontStyle = FontStyle.Italic
                         )
                     }
@@ -245,9 +244,9 @@ fun VaultScreen(
                     .padding(start = 16.dp, bottom = 24.dp)
                     .size(56.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(GrozeSurfaceContainerHigh)
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Item", tint = GrozeOnSurface)
+                Icon(Icons.Default.Add, contentDescription = "Add Item", tint = MaterialTheme.colorScheme.onSurface)
             }
         }
     }
@@ -275,7 +274,7 @@ fun VaultItemCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(GrozeSurfaceContainerLowest)
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -284,13 +283,13 @@ fun VaultItemCard(
             modifier = Modifier
                 .size(56.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(GrozeSecondaryContainer),
+                .background(MaterialTheme.colorScheme.secondaryContainer),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = getCategoryIconVector(item.category),
                 contentDescription = null,
-                tint = GrozeOnSecondaryContainer,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -301,7 +300,7 @@ fun VaultItemCard(
             Text(
                 item.name,
                 style = MaterialTheme.typography.titleMedium,
-                color = GrozeOnSurface
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(4.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -310,22 +309,22 @@ fun VaultItemCard(
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 0.5.sp,
-                    color = GrozeOnSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .clip(RoundedCornerShape(4.dp))
-                        .background(GrozeSurfaceContainer)
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
                         .padding(horizontal = 6.dp, vertical = 2.dp)
                 )
                 Text(
                     "  •  ",
                     fontSize = 10.sp,
-                    color = GrozeOutline
+                    color = MaterialTheme.colorScheme.outline
                 )
                 Text(
                     "Last: $${String.format("%.2f", item.lastPrice)}",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
-                    color = GrozeOnSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -335,7 +334,7 @@ fun VaultItemCard(
                 Icon(
                     Icons.Default.MoreVert,
                     contentDescription = "More options",
-                    tint = GrozeOutlineVariant
+                    tint = MaterialTheme.colorScheme.outlineVariant
                 )
             }
             DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
@@ -344,7 +343,7 @@ fun VaultItemCard(
                     onClick = { showMenu = false; onEdit() }
                 )
                 DropdownMenuItem(
-                    text = { Text("Delete", color = GrozeError) },
+                    text = { Text("Delete", color = MaterialTheme.colorScheme.error) },
                     onClick = { showMenu = false; onDelete() }
                 )
             }
