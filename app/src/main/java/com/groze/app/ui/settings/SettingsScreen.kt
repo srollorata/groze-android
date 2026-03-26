@@ -3,6 +3,7 @@ package com.groze.app.ui.settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,14 +22,18 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Payments
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -45,8 +50,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.groze.app.ui.theme.GrozePrimary
-import com.groze.app.ui.theme.GrozePrimaryContainer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,8 +59,7 @@ fun SettingsScreen(
 ) {
     val darkMode by viewModel.darkMode.collectAsState(initial = "system")
     val currency by viewModel.currency.collectAsState(initial = "USD")
-
-    var darkModeToggle by remember { mutableStateOf(darkMode == "dark") }
+    var showCurrencyPicker by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -66,7 +68,7 @@ fun SettingsScreen(
                     Text(
                         "Settings",
                         fontWeight = FontWeight.ExtraBold,
-                        color = GrozePrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp
                     )
                 },
@@ -75,7 +77,7 @@ fun SettingsScreen(
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = GrozePrimary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 },
@@ -109,12 +111,11 @@ fun SettingsScreen(
             SettingsRow(
                 icon = Icons.Default.Palette,
                 title = "Appearance",
-                subtitle = if (darkModeToggle) "Dark Mode" else "Light Mode",
+                subtitle = if (darkMode == "dark") "Dark Mode" else "Light Mode",
                 trailing = {
                     Switch(
-                        checked = darkModeToggle,
+                        checked = darkMode == "dark",
                         onCheckedChange = { isChecked ->
-                            darkModeToggle = isChecked
                             viewModel.setDarkMode(if (isChecked) "dark" else "light")
                         },
                         colors = SwitchDefaults.colors(
@@ -123,7 +124,7 @@ fun SettingsScreen(
                         )
                     )
                 },
-                onClick = { darkModeToggle = !darkModeToggle }
+                onClick = { viewModel.setDarkMode(if (darkMode == "dark") "light" else "dark") }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -140,7 +141,7 @@ fun SettingsScreen(
                         tint = MaterialTheme.colorScheme.outlineVariant
                     )
                 },
-                onClick = { /* TODO: Open currency picker */ }
+                onClick = { showCurrencyPicker = true }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -206,6 +207,80 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(32.dp))
         }
     }
+
+    // Currency Picker Dialog
+    if (showCurrencyPicker) {
+        AlertDialog(
+            onDismissRequest = { showCurrencyPicker = false },
+            title = {
+                Text(
+                    "Select Currency",
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
+            text = {
+                Column {
+                    CurrencyOption(
+                        currency = "USD",
+                        label = "USD ($)",
+                        selected = currency == "USD",
+                        onSelect = {
+                            viewModel.setCurrency("USD")
+                            showCurrencyPicker = false
+                        }
+                    )
+                    CurrencyOption(
+                        currency = "PHP",
+                        label = "PHP (₱)",
+                        selected = currency == "PHP",
+                        onSelect = {
+                            viewModel.setCurrency("PHP")
+                            showCurrencyPicker = false
+                        }
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showCurrencyPicker = false }) {
+                    Text("Cancel", color = MaterialTheme.colorScheme.primary)
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    }
+}
+
+@Composable
+private fun CurrencyOption(
+    currency: String,
+    label: String,
+    selected: Boolean,
+    onSelect: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(onClick = onSelect)
+            .padding(vertical = 12.dp, horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(
+            selected = selected,
+            onClick = onSelect,
+            colors = RadioButtonDefaults.colors(
+                selectedColor = MaterialTheme.colorScheme.primary,
+                unselectedColor = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
 }
 
 @Composable
@@ -228,7 +303,7 @@ private fun SettingsRow(
         Icon(
             icon,
             contentDescription = null,
-            tint = GrozePrimary,
+            tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))

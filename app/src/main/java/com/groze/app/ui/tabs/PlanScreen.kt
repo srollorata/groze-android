@@ -39,16 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.groze.app.ui.theme.GrozeBackground
-import com.groze.app.ui.theme.GrozeOnPrimary
-import com.groze.app.ui.theme.GrozeOnSurface
-import com.groze.app.ui.theme.GrozeOnSurfaceVariant
-import com.groze.app.ui.theme.GrozePrimary
-import com.groze.app.ui.theme.GrozePrimaryContainer
-import com.groze.app.ui.theme.GrozePrimaryDim
-import com.groze.app.ui.theme.GrozeSecondaryContainer
-import com.groze.app.ui.theme.GrozeSurface
-import com.groze.app.ui.theme.GrozeSurfaceContainerLow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,16 +57,16 @@ fun PlanScreen(
                     Text(
                         "Plan",
                         fontWeight = FontWeight.ExtraBold,
-                        color = GrozePrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = GrozeBackground
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             )
         },
-        containerColor = GrozeBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -94,12 +84,12 @@ fun PlanScreen(
                     .shadow(
                         elevation = 8.dp,
                         shape = RoundedCornerShape(24.dp),
-                        ambientColor = GrozePrimary.copy(alpha = 0.15f)
+                        ambientColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
                     )
                     .clip(RoundedCornerShape(24.dp))
                     .background(
                         Brush.linearGradient(
-                            colors = listOf(GrozePrimary, GrozePrimaryDim)
+                            colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary.copy(alpha = 0.8f))
                         )
                     )
                     .padding(24.dp)
@@ -112,13 +102,13 @@ fun PlanScreen(
                             modifier = Modifier
                                 .size(48.dp)
                                 .clip(RoundedCornerShape(12.dp))
-                                .background(GrozePrimaryContainer.copy(alpha = 0.3f)),
+                                .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 Icons.Default.EditCalendar,
                                 contentDescription = null,
-                                tint = GrozeOnPrimary,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -127,13 +117,13 @@ fun PlanScreen(
                             Text(
                                 "Plan Your Next Trip",
                                 style = MaterialTheme.typography.titleLarge,
-                                color = GrozeOnPrimary,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
                                 "Curate your shopping list",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = GrozeOnPrimary.copy(alpha = 0.8f)
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                             )
                         }
                     }
@@ -160,10 +150,10 @@ fun PlanScreen(
                     .shadow(
                         elevation = 4.dp,
                         shape = RoundedCornerShape(20.dp),
-                        ambientColor = GrozeOnSurface.copy(alpha = 0.05f)
+                        ambientColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f)
                     )
                     .clip(RoundedCornerShape(20.dp))
-                    .background(GrozeSurfaceContainerLow)
+                    .background(MaterialTheme.colorScheme.surfaceContainerLow)
                     .padding(20.dp)
             ) {
                 Column(
@@ -172,21 +162,21 @@ fun PlanScreen(
                     Icon(
                         Icons.Default.ShoppingCart,
                         contentDescription = null,
-                        tint = GrozePrimary,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(48.dp)
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         "Start Planning",
                         style = MaterialTheme.typography.titleMedium,
-                        color = GrozeOnSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         "Select items from your vault to create a new shopping trip",
                         style = MaterialTheme.typography.bodySmall,
-                        color = GrozeOnSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -198,8 +188,8 @@ fun PlanScreen(
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = GrozePrimary,
-                            contentColor = GrozeOnPrimary
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         ),
                         shape = RoundedCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth()
@@ -218,14 +208,14 @@ fun PlanScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
-                    .background(GrozeSecondaryContainer.copy(alpha = 0.5f))
+                    .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f))
                     .padding(16.dp)
             ) {
                 Column {
                     Text(
                         "Tips",
                         style = MaterialTheme.typography.titleSmall,
-                        color = GrozeOnSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.SemiBold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -234,7 +224,7 @@ fun PlanScreen(
                                 "• Use categories to organize items\n" +
                                 "• Check expected prices before shopping",
                         style = MaterialTheme.typography.bodySmall,
-                        color = GrozeOnSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -248,13 +238,13 @@ private fun StatItem(value: String, label: String) {
         Text(
             value,
             style = MaterialTheme.typography.headlineSmall,
-            color = GrozeOnPrimary,
+            color = MaterialTheme.colorScheme.onPrimary,
             fontWeight = FontWeight.Bold
         )
         Text(
             label,
             style = MaterialTheme.typography.bodySmall,
-            color = GrozeOnPrimary.copy(alpha = 0.7f)
+            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
         )
     }
 }

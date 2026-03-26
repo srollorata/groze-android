@@ -38,16 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.groze.app.data.local.entity.TripEntity
-import com.groze.app.ui.theme.GrozeBackground
-import com.groze.app.ui.theme.GrozeError
-import com.groze.app.ui.theme.GrozeOnError
-import com.groze.app.ui.theme.GrozeOnSurface
-import com.groze.app.ui.theme.GrozeOnSurfaceVariant
-import com.groze.app.ui.theme.GrozePrimary
-import com.groze.app.ui.theme.GrozePrimaryContainer
-import com.groze.app.ui.theme.GrozeSurface
-import com.groze.app.ui.theme.GrozeSurfaceContainerLow
-import com.groze.app.ui.theme.GrozeSurfaceVariant
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -67,16 +57,16 @@ fun ShopScreen(
                     Text(
                         "Shop",
                         fontWeight = FontWeight.ExtraBold,
-                        color = GrozePrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 20.sp
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = GrozeBackground
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             )
         },
-        containerColor = GrozeBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -101,27 +91,27 @@ fun ShopScreen(
                             modifier = Modifier
                                 .size(80.dp)
                                 .clip(RoundedCornerShape(24.dp))
-                                .background(GrozeSurfaceContainerLow),
+                                .background(MaterialTheme.colorScheme.surfaceContainerLow),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 Icons.Default.ShoppingCartCheckout,
                                 contentDescription = null,
                                 modifier = Modifier.size(40.dp),
-                                tint = GrozeSurfaceVariant
+                                tint = MaterialTheme.colorScheme.surfaceVariant
                             )
                         }
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             "No Active Trips",
                             style = MaterialTheme.typography.titleMedium,
-                            color = GrozeOnSurface
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             "Start a shopping trip from the Plan tab",
                             style = MaterialTheme.typography.bodySmall,
-                            color = GrozeOnSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -129,7 +119,7 @@ fun ShopScreen(
                 Text(
                     "Active Shopping",
                     style = MaterialTheme.typography.titleMedium,
-                    color = GrozeOnSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold
                 )
                 Spacer(modifier = Modifier.height(12.dp))
@@ -161,10 +151,10 @@ private fun ActiveTripCard(
             .shadow(
                 elevation = 4.dp,
                 shape = RoundedCornerShape(20.dp),
-                ambientColor = GrozePrimary.copy(alpha = 0.1f)
+                ambientColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
             )
             .clip(RoundedCornerShape(20.dp))
-            .background(GrozePrimaryContainer)
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .clickable(onClick = onClick)
             .padding(20.dp)
     ) {
@@ -176,13 +166,13 @@ private fun ActiveTripCard(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(GrozePrimary),
+                    .background(MaterialTheme.colorScheme.primary),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     Icons.Default.ShoppingCart,
                     contentDescription = null,
-                    tint = GrozeSurface,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -191,26 +181,26 @@ private fun ActiveTripCard(
                 Text(
                     "Shopping Trip #${trip.id}",
                     style = MaterialTheme.typography.titleMedium,
-                    color = GrozeOnSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
                     "In Progress",
                     style = MaterialTheme.typography.bodySmall,
-                    color = GrozePrimary
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     "$${String.format("%.2f", trip.actualTotal)}",
                     style = MaterialTheme.typography.titleMedium,
-                    color = GrozeOnSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     "of $${String.format("%.2f", trip.expectedTotal)}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = GrozeOnSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
