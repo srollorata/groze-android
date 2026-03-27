@@ -57,6 +57,8 @@ import com.groze.app.data.local.entity.CartItemEntity
 import com.groze.app.data.local.entity.CartItemStatus
 import kotlinx.coroutines.launch
 
+private val CheckedItemBackground = Color(0xFFE8F5E9)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActiveTripScreen(
@@ -200,11 +202,11 @@ fun ActiveTripScreen(
     }
 
     // Price update bottom sheet
-    if (priceSheetItem != null) {
+    priceSheetItem?.let { item ->
         UpdatePriceSheet(
-            item = priceSheetItem!!,
+            item = item,
             onDismiss = viewModel::dismissPriceSheet,
-            onConfirm = { price -> viewModel.updatePrice(priceSheetItem!!.id, price) }
+            onConfirm = { price -> viewModel.updatePrice(item.id, price) }
         )
     }
 
@@ -337,7 +339,7 @@ fun ActiveItemCard(
     val priceDelta = if (priceChanged) (item.actualPrice!! - item.plannedPrice) else 0.0
     val itemTotal = (item.actualPrice ?: item.plannedPrice) * item.quantity
 
-    val checkedBackgroundColor = Color(0xFFE8F5E9)
+    val checkedBackgroundColor = CheckedItemBackground
 
     Row(
         modifier = Modifier
