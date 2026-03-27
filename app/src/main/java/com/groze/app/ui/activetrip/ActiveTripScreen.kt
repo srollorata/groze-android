@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Sell
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -45,9 +47,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.groze.app.data.local.entity.CartItemEntity
@@ -193,9 +196,6 @@ fun ActiveTripScreen(
                     )
                 }
             }
-
-            // Bottom spacer
-            item { Spacer(modifier = Modifier.height(80.dp)) }
         }
     }
 
@@ -226,6 +226,8 @@ fun PlanOverviewCard(
     checkedItems: Int,
     totalItems: Int
 ) {
+    val isUnderBudget = actualTotal <= expectedTotal
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -268,52 +270,54 @@ fun PlanOverviewCard(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Expected
-            Column(
+            Surface(
                 modifier = Modifier
                     .weight(1f)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-                    .padding(16.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                tonalElevation = 1.dp,
+                color = MaterialTheme.colorScheme.surfaceContainerLowest
             ) {
-                Text(
-                    "EXPECTED",
-                    fontSize = 9.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    "$${String.format("%.2f", expectedTotal)}",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        "EXPECTED",
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        "$${String.format("%.2f", expectedTotal)}",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
 
-            // Actual
-            Column(
+            Surface(
                 modifier = Modifier
                     .weight(1f)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-                    .padding(16.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                tonalElevation = if (isUnderBudget) 4.dp else 1.dp,
+                color = if (isUnderBudget) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerLowest
             ) {
-                Text(
-                    "ACTUAL",
-                    fontSize = 9.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    "$${String.format("%.2f", actualTotal)}",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        "ACTUAL",
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 1.sp,
+                        color = if (isUnderBudget) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        "$${String.format("%.2f", actualTotal)}",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = if (isUnderBudget) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
         }
     }
@@ -333,13 +337,15 @@ fun ActiveItemCard(
     val priceDelta = if (priceChanged) (item.actualPrice!! - item.plannedPrice) else 0.0
     val itemTotal = (item.actualPrice ?: item.plannedPrice) * item.quantity
 
+    val checkedBackgroundColor = Color(0xFFE8F5E9)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(
                 when {
-                    isChecked -> MaterialTheme.colorScheme.primaryContainer
+                    isChecked -> checkedBackgroundColor
                     isSkipped -> MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.5f)
                     else -> MaterialTheme.colorScheme.surfaceContainerLowest
                 }
@@ -349,11 +355,10 @@ fun ActiveItemCard(
                     .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                 else Modifier
             )
-            .alpha(if (isSkipped) 0.5f else 1f)
+            .alpha(if (isChecked) 0.7f else if (isSkipped) 0.5f else 1f)
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Icon
         Box(
             modifier = Modifier
                 .size(48.dp)
@@ -371,71 +376,87 @@ fun ActiveItemCard(
                     tint = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.size(20.dp)
                 )
+            } else {
+                Icon(
+                    Icons.Default.ShoppingCart,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f),
+                    modifier = Modifier.size(20.dp)
+                )
             }
         }
 
         Spacer(modifier = Modifier.width(12.dp))
 
-        // Item details
-        Column(modifier = Modifier.weight(1f)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    item.name,
-                    fontWeight = FontWeight.Bold,
-                    color = if (isChecked) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
-                    textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
-                    modifier = Modifier.alpha(if (isChecked) 0.6f else 1f)
-                )
-                if (item.isAdHoc) {
-                    Spacer(modifier = Modifier.width(8.dp))
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        "NEW",
-                        fontSize = 9.sp,
+                        item.name,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(50))
-                            .background(MaterialTheme.colorScheme.secondaryContainer)
-                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        softWrap = true,
+                        color = if (isChecked) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
+                        textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None,
+                        modifier = Modifier.alpha(if (isChecked) 0.6f else 1f)
                     )
+                    if (item.isAdHoc) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            "NEW",
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(50))
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        )
+                    }
                 }
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    buildString {
-                        if (item.quantity > 1) append("${item.quantity} × ")
-                        if (item.unit.isNotBlank()) append("${item.unit} • ")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val hasQuantity = item.quantity > 1
+                    val hasUnit = item.unit.isNotBlank()
+                    val metadataText = buildString {
+                        if (hasQuantity) append("${item.quantity} × ")
+                        if (hasUnit) append("${item.unit}")
+                        if (hasQuantity || hasUnit) append(" • ")
                         append("$${String.format("%.2f", item.actualPrice ?: item.plannedPrice)}")
-                    },
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                if (priceChanged) {
-                    Spacer(modifier = Modifier.width(8.dp))
+                    }
                     Text(
-                        "${if (priceDelta > 0) "+" else ""}$${String.format("%.2f", priceDelta)}",
-                        fontSize = 9.sp,
+                        metadataText,
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    if (priceChanged) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            "${if (priceDelta > 0) "+" else ""}$${String.format("%.2f", priceDelta)}",
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(50))
+                                .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.2f))
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        )
+                    }
+                }
+                if (item.quantity > 1) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        "Total: $${String.format("%.2f", itemTotal)}",
+                        fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(50))
-                            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.2f))
-                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
-            }
-            if (item.quantity > 1) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    "Total: $${String.format("%.2f", itemTotal)}",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
             }
         }
-
-        // Action buttons
         if (!isSkipped) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 // Quantity controls (only for unchecked items)
