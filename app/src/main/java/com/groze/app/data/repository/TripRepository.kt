@@ -71,6 +71,11 @@ class TripRepository @Inject constructor(
 
     suspend fun updateCartItem(item: CartItemEntity) = cartItemDao.updateItem(item)
 
+    suspend fun deleteCartItem(itemId: Long) {
+        val item = cartItemDao.getItemById(itemId) ?: return
+        cartItemDao.deleteItem(item)
+    }
+
     suspend fun checkItem(itemId: Long, actualPrice: Double? = null) {
         val item = cartItemDao.getItemById(itemId) ?: return
         cartItemDao.updateItem(
@@ -96,7 +101,12 @@ class TripRepository @Inject constructor(
         cartItemDao.updateItem(item.copy(actualPrice = newPrice))
     }
 
-    suspend fun addAdHocItem(tripId: Long, name: String, price: Double, category: String = "", unit: String = "") {
+    suspend fun updateItemQuantity(itemId: Long, newQuantity: Int) {
+        val item = cartItemDao.getItemById(itemId) ?: return
+        cartItemDao.updateItem(item.copy(quantity = newQuantity))
+    }
+
+    suspend fun addAdHocItem(tripId: Long, name: String, price: Double, category: String = "", unit: String = "", quantity: Int = 1) {
         cartItemDao.insertItem(
             CartItemEntity(
                 tripId = tripId,

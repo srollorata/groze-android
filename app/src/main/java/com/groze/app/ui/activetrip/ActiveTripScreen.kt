@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material.icons.filled.ReceiptLong
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Sell
 import androidx.compose.material3.Button
@@ -187,7 +188,8 @@ fun ActiveTripScreen(
                         item = item,
                         onCheck = { viewModel.checkItem(item) },
                         onSkip = { viewModel.skipItem(item) },
-                        onUpdatePrice = { viewModel.showPriceUpdate(item) }
+                        onUpdatePrice = { viewModel.showPriceUpdate(item) },
+                        onQuantityChange = { newQuantity -> viewModel.updateItemQuantity(item, newQuantity) }
                     )
                 }
             }
@@ -210,8 +212,8 @@ fun ActiveTripScreen(
     if (showAddAdHoc) {
         AddAdHocItemSheet(
             onDismiss = viewModel::dismissAddAdHoc,
-            onAdd = { name, price, category, unit ->
-                viewModel.addAdHocItem(name, price, category, unit)
+            onAdd = { name, price, category, unit, quantity ->
+                viewModel.addAdHocItem(name, price, category, unit, quantity)
             }
         )
     }
@@ -322,12 +324,14 @@ fun ActiveItemCard(
     item: CartItemEntity,
     onCheck: () -> Unit,
     onSkip: () -> Unit,
-    onUpdatePrice: () -> Unit
+    onUpdatePrice: () -> Unit,
+    onQuantityChange: (Int) -> Unit
 ) {
     val isChecked = item.status == CartItemStatus.CHECKED
     val isSkipped = item.status == CartItemStatus.SKIPPED
     val priceChanged = item.actualPrice != null && item.actualPrice != item.plannedPrice && !item.isAdHoc
     val priceDelta = if (priceChanged) (item.actualPrice!! - item.plannedPrice) else 0.0
+    val itemTotal = (item.actualPrice ?: item.plannedPrice) * item.quantity
 
     Row(
         modifier = Modifier
@@ -420,11 +424,56 @@ fun ActiveItemCard(
                     )
                 }
             }
+            if (item.quantity > 1) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    "Total: $${String.format("%.2f", itemTotal)}",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
 
         // Action buttons
         if (!isSkipped) {
-            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                // Quantity controls (only for unchecked items)
+                if (!isChecked) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(
+                            onClick = { onQuantityChange(item.quantity - 1) },
+                            modifier = Modifier.size(32.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.Remove,
+                                contentDescription = "Decrease quantity",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+
+                        Text(
+                            "${item.quantity}",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp,
+                            modifier = Modifier.padding(horizontal = 4.dp)
+                        )
+
+                        IconButton(
+                            onClick = { onQuantityChange(item.quantity + 1) },
+                            modifier = Modifier.size(32.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.Add,
+                                contentDescription = "Increase quantity",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
+                }
+
                 if (!isChecked && !item.isAdHoc) {
                     // Price update button
                     IconButton(

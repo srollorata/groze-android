@@ -106,11 +106,25 @@ class ActiveTripViewModel @Inject constructor(
         _showAddAdHocSheet.value = false
     }
 
-    fun addAdHocItem(name: String, price: Double, category: String, unit: String) {
+    fun addAdHocItem(name: String, price: Double, category: String, unit: String, quantity: Int = 1) {
         viewModelScope.launch {
-            tripRepository.addAdHocItem(tripId, name, price, category, unit)
+            tripRepository.addAdHocItem(tripId, name, price, category, unit, quantity)
             _showAddAdHocSheet.value = false
             updateTotals()
+        }
+    }
+
+    fun updateItemQuantity(item: CartItemEntity, newQuantity: Int) {
+        if (newQuantity < 1) {
+            viewModelScope.launch {
+                tripRepository.deleteCartItem(item.id)
+                updateTotals()
+            }
+        } else {
+            viewModelScope.launch {
+                tripRepository.updateItemQuantity(item.id, newQuantity)
+                updateTotals()
+            }
         }
     }
 
