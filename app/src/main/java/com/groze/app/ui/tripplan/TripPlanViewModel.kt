@@ -101,7 +101,19 @@ class TripPlanViewModel @Inject constructor(
 
     fun removeCartItem(item: CartItemEntity) {
         viewModelScope.launch {
-            tripRepository.updateCartItem(item) // Using delete via repository
+            tripRepository.deleteCartItem(item.id)
+        }
+    }
+
+    fun updateItemQuantity(item: CartItemEntity, newQuantity: Int) {
+        if (newQuantity < 1) {
+            viewModelScope.launch {
+                tripRepository.deleteCartItem(item.id)
+            }
+        } else {
+            viewModelScope.launch {
+                tripRepository.updateItemQuantity(item.id, newQuantity)
+            }
         }
     }
 

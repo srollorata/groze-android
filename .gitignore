@@ -23,6 +23,7 @@ local.properties
 Thumbs.db
 
 # Extra files
+/.opencode/
 /groze-userflow.png
 /implementation_plan.md
 /settings/

@@ -29,13 +29,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AddAdHocItemSheet(
     onDismiss: () -> Unit,
-    onAdd: (name: String, price: Double, category: String, unit: String) -> Unit
+    onAdd: (name: String, price: Double, category: String, unit: String, quantity: Int) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var name by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
     var unit by remember { mutableStateOf("") }
+    var quantity by remember { mutableStateOf("1") }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -108,12 +109,25 @@ fun AddAdHocItemSheet(
                 shape = RoundedCornerShape(12.dp)
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = quantity,
+                onValueChange = { quantity = it },
+                label = { Text("Quantity") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                shape = RoundedCornerShape(12.dp)
+            )
+
             Spacer(modifier = Modifier.height(28.dp))
 
             Button(
                 onClick = {
                     val parsedPrice = price.toDoubleOrNull() ?: 0.0
-                    onAdd(name, parsedPrice, category, unit)
+                    val parsedQuantity = quantity.toIntOrNull() ?: 1
+                    onAdd(name, parsedPrice, category, unit, parsedQuantity)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
