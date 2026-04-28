@@ -69,6 +69,7 @@ fun ActiveTripScreen(
     val uiState by viewModel.uiState.collectAsState()
     val priceSheetItem by viewModel.showPriceSheet.collectAsState()
     val showAddAdHoc by viewModel.showAddAdHocSheet.collectAsState()
+    val currency by viewModel.currency.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
     // Group items by category
@@ -191,6 +192,7 @@ fun ActiveTripScreen(
                 items(items, key = { it.id }) { item ->
                     ActiveItemCard(
                         item = item,
+                        formatPrice = viewModel::formatPrice,
                         onCheck = { viewModel.checkItem(item) },
                         onSkip = { viewModel.skipItem(item) },
                         onUpdatePrice = { viewModel.showPriceUpdate(item) },
@@ -289,7 +291,7 @@ fun PlanOverviewCard(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        "$${String.format("%.2f", expectedTotal)}",
+                        "viewModel.formatPrice(expectedTotal)",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -314,7 +316,7 @@ fun PlanOverviewCard(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        "$${String.format("%.2f", actualTotal)}",
+                        "viewModel.formatPrice(actualTotal)",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = if (isUnderBudget) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
@@ -328,6 +330,7 @@ fun PlanOverviewCard(
 @Composable
 fun ActiveItemCard(
     item: CartItemEntity,
+    formatPrice: (Double) -> String,
     onCheck: () -> Unit,
     onSkip: () -> Unit,
     onUpdatePrice: () -> Unit,
@@ -423,11 +426,12 @@ fun ActiveItemCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val hasQuantity = item.quantity > 1
                     val hasUnit = item.unit.isNotBlank()
+                    val formattedItemPrice = formatPrice(item.actualPrice ?: item.plannedPrice)
                     val metadataText = buildString {
                         if (hasQuantity) append("${item.quantity} × ")
                         if (hasUnit) append("${item.unit}")
                         if (hasQuantity || hasUnit) append(" • ")
-                        append("$${String.format("%.2f", item.actualPrice ?: item.plannedPrice)}")
+                        append(formattedItemPrice)
                     }
                     Text(
                         metadataText,
@@ -435,9 +439,10 @@ fun ActiveItemCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (priceChanged) {
+                        val formattedPriceDelta = formatPrice(priceDelta)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            "${if (priceDelta > 0) "+" else ""}$${String.format("%.2f", priceDelta)}",
+                            "${if (priceDelta > 0) "+" else ""}$formattedPriceDelta",
                             fontSize = 9.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.error,
@@ -449,9 +454,10 @@ fun ActiveItemCard(
                     }
                 }
                 if (item.quantity > 1) {
+                    val formattedItemTotal = formatPrice(itemTotal)
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        "Total: $${String.format("%.2f", itemTotal)}",
+                        "Total: $formattedItemTotal",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary

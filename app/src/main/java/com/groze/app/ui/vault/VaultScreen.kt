@@ -71,6 +71,7 @@ fun VaultScreen(
     val searchQuery by viewModel.searchQuery.collectAsState()
     val editItem by viewModel.showAddEditSheet.collectAsState()
     val isAddMode by viewModel.isAddMode.collectAsState()
+    val currency by viewModel.currency.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
@@ -221,6 +222,8 @@ fun VaultScreen(
                 items(vaultItems, key = { it.id }) { item ->
                     VaultItemCard(
                         item = item,
+                        currency = currency,
+                        formattedPrice = viewModel.formatPrice(item.lastPrice),
                         onEdit = { viewModel.showEditSheet(item) },
                         onDelete = { viewModel.deleteItem(item) }
                     )
@@ -256,6 +259,7 @@ fun VaultScreen(
         AddEditVaultItemSheet(
             item = editItem!!,
             isAdd = isAddMode,
+            currency = currency,
             onDismiss = viewModel::dismissSheet,
             onSave = viewModel::saveItem
         )
@@ -265,6 +269,8 @@ fun VaultScreen(
 @Composable
 fun VaultItemCard(
     item: VaultItemEntity,
+    currency: String,
+    formattedPrice: String,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -321,7 +327,7 @@ fun VaultItemCard(
                     color = MaterialTheme.colorScheme.outline
                 )
                 Text(
-                    "Last: $${String.format("%.2f", item.lastPrice)}",
+                    "Last: $formattedPrice",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant

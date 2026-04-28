@@ -49,6 +49,7 @@ fun HistoryScreen(
     viewModel: HistoryViewModel = hiltViewModel()
 ) {
     val completedTrips by viewModel.completedTrips.collectAsState()
+    val currency by viewModel.currency.collectAsState()
 
     Scaffold(
         topBar = {
@@ -127,9 +128,9 @@ fun HistoryScreen(
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(completedTrips, key = { it.id }) { trip ->
-                        CompletedTripCard(trip = trip)
-                    }
+items(completedTrips, key = { it.id }) { trip ->
+                    CompletedTripCard(trip = trip, formatPrice = viewModel::formatPrice)
+                }
                     item { Spacer(modifier = Modifier.height(80.dp)) }
                 }
             }
@@ -138,7 +139,10 @@ fun HistoryScreen(
 }
 
 @Composable
-private fun CompletedTripCard(trip: TripEntity) {
+private fun CompletedTripCard(
+    trip: TripEntity,
+    formatPrice: (Double) -> String
+) {
     val dateFormat = SimpleDateFormat("EEEE, MMM dd, yyyy", Locale.getDefault())
     val date = trip.completedAt?.let { dateFormat.format(Date(it)) } ?: "Unknown"
 
@@ -192,7 +196,7 @@ private fun CompletedTripCard(trip: TripEntity) {
             Column(horizontalAlignment = Alignment.End) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        "$${String.format("%.2f", trip.actualTotal)}",
+                        formatPrice(trip.actualTotal),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Bold
@@ -206,8 +210,9 @@ private fun CompletedTripCard(trip: TripEntity) {
                         tint = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.width(4.dp))
+                    val formattedDiff = formatPrice(difference)
                     Text(
-                        "${if (isOverBudget) "+" else ""}$${String.format("%.2f", difference)}",
+                        "${if (isOverBudget) "+" else ""}$formattedDiff",
                         style = MaterialTheme.typography.bodySmall,
                         color = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                     )

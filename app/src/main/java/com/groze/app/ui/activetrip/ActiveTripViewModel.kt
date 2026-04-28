@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.groze.app.data.local.entity.CartItemEntity
 import com.groze.app.data.local.entity.CartItemStatus
 import com.groze.app.data.local.entity.TripEntity
+import com.groze.app.data.preferences.UserPreferences
+import com.groze.app.data.repository.ExchangeRateRepository
+import com.groze.app.data.repository.ExchangeRateState
 import com.groze.app.data.repository.TripRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,10 +32,31 @@ data class ActiveTripUiState(
 @HiltViewModel
 class ActiveTripViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val tripRepository: TripRepository
+    private val tripRepository: TripRepository,
+    private val userPreferences: UserPreferences,
+    private val exchangeRateRepository: ExchangeRateRepository
 ) : ViewModel() {
 
     val tripId: Long = savedStateHandle.get<Long>("tripId") ?: 0L
+
+    val currency: StateFlow<String> = userPreferences.currency
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "USD")
+
+    val exchangeRates: StateFlow<ExchangeRateState> = exchangeRateRepository.exchangeRates
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExchangeRateState())
+
+    fun formatPrice(price: Double): String {
+        val currentCurrency = currency.value
+        val symbol = getCurrencySymbol(currentCurrency)
+        return "$symbol${String.format("%.2f", price)}"
+    }
+
+    private fun getCurrencySymbol(currency: String): String {
+        return when (currency.uppercase()) {
+            "PHP" -> "₱"
+            else -> "$"
+        }
+    }
 
     private val cartItems = tripRepository.getCartItems(tripId)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
