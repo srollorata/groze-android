@@ -56,6 +56,7 @@ fun TripSummaryScreen(
     onDismiss: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val currency by viewModel.currency.collectAsState()
 
     Scaffold(
         topBar = {
@@ -150,7 +151,7 @@ fun TripSummaryScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            "$${String.format("%.2f", uiState.originalPlan)}",
+                            viewModel.formatPrice(uiState.originalPlan),
                             fontSize = 28.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -174,7 +175,7 @@ fun TripSummaryScreen(
                         )
                         Column {
                             Text(
-                                "$${String.format("%.2f", uiState.actualSpend)}",
+                                viewModel.formatPrice(uiState.actualSpend),
                                 fontSize = 28.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -235,7 +236,7 @@ fun TripSummaryScreen(
 
             // Delta items
             items(uiState.deltas) { delta ->
-                DeltaCard(delta)
+                DeltaCard(delta, formatPrice = viewModel::formatPrice)
             }
 
             // Sync indicator
@@ -270,7 +271,10 @@ fun TripSummaryScreen(
 }
 
 @Composable
-fun DeltaCard(delta: TripDelta) {
+fun DeltaCard(
+    delta: TripDelta,
+    formatPrice: (Double) -> String
+) {
     val isSkipped = delta.type == DeltaType.SKIPPED
     val isNew = delta.type == DeltaType.NEW_ITEM
 
@@ -348,20 +352,21 @@ fun DeltaCard(delta: TripDelta) {
         Column(horizontalAlignment = Alignment.End) {
             if (delta.type == DeltaType.PRICE_CHANGE) {
                 Text(
-                    "$${String.format("%.2f", delta.item.plannedPrice)}",
+                    formatPrice(delta.item.plannedPrice),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textDecoration = TextDecoration.LineThrough
                 )
                 Text(
-                    "$${String.format("%.2f", delta.item.actualPrice ?: delta.item.plannedPrice)}",
+                    formatPrice(delta.item.actualPrice ?: delta.item.plannedPrice),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.error
                 )
             } else {
+                val formattedDelta = formatPrice(delta.priceDifference)
                 Text(
-                    "${if (delta.priceDifference >= 0) "+" else ""}$${String.format("%.2f", delta.priceDifference)}",
+                    "${if (delta.priceDifference >= 0) "+" else ""}$formattedDelta",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = when {

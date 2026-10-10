@@ -69,6 +69,7 @@ fun TripPlanScreen(
     val cartItemCount by viewModel.cartItemCount.collectAsState()
     val expectedTotal by viewModel.expectedTotal.collectAsState()
     val cartItems by viewModel.cartItems.collectAsState()
+    val currency by viewModel.currency.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     var showAddNew by remember { mutableStateOf(false) }
 
@@ -122,7 +123,7 @@ fun TripPlanScreen(
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         // Expected total
                         Text(
-                            "Expected: $${String.format("%.2f", expectedTotal)}",
+                            "Expected: ${viewModel.formatPrice(expectedTotal)}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(start = 4.dp)
@@ -292,6 +293,8 @@ fun TripPlanScreen(
                 items(cartItems, key = { it.id }) { item ->
                     CartItemCard(
                         item = item,
+                        currency = currency,
+                        formatPrice = viewModel::formatPrice,
                         onQuantityChange = { newQuantity ->
                             viewModel.updateItemQuantity(item, newQuantity)
                         },
@@ -343,6 +346,7 @@ fun TripPlanScreen(
                 lastPrice = 0.0
             ),
             isAdd = true,
+            currency = currency,
             onDismiss = { showAddNew = false },
             onSave = { name, category, price, unit ->
                 viewModel.addNewItemToVaultAndCart(name, category, price, unit)
@@ -463,6 +467,8 @@ fun VaultMatchCard(
 @Composable
 fun CartItemCard(
     item: CartItemEntity,
+    currency: String,
+    formatPrice: (Double) -> String,
     onQuantityChange: (Int) -> Unit,
     onRemove: () -> Unit
 ) {
@@ -502,12 +508,12 @@ fun CartItemCard(
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                if (item.unit.isNotBlank()) "${item.unit} • $${String.format("%.2f", item.plannedPrice)}/unit" else "$${String.format("%.2f", item.plannedPrice)}/unit",
+                if (item.unit.isNotBlank()) "${item.unit} • ${formatPrice(item.plannedPrice)}/unit" else "${formatPrice(item.plannedPrice)}/unit",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
-                "Total: $${String.format("%.2f", itemTotal)}",
+                "Total: ${formatPrice(itemTotal)}",
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary

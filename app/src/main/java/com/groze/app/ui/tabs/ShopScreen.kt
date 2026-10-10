@@ -49,6 +49,7 @@ fun ShopScreen(
     onOpenTrip: (Long) -> Unit
 ) {
     val activeTrips by viewModel.activeTrips.collectAsState()
+    val currency by viewModel.currency.collectAsState()
 
     Scaffold(
         topBar = {
@@ -127,12 +128,18 @@ fun ShopScreen(
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(activeTrips, key = { it.id }) { trip ->
-                        ActiveTripCard(
-                            trip = trip,
-                            onClick = { onOpenTrip(trip.id) }
-                        )
-                    }
+                    items(activeTrips,
+                    key = { it.id }
+                ) { trip ->
+                    val formattedTotal = viewModel.formatPrice(trip.actualTotal)
+                    val formattedExpected = viewModel.formatPrice(trip.expectedTotal)
+                    ActiveTripCard(
+                        trip = trip,
+                        formattedTotal = formattedTotal,
+                        formattedExpected = formattedExpected,
+                        onClick = { onOpenTrip(trip.id) }
+                    )
+                }
                     item { Spacer(modifier = Modifier.height(80.dp)) }
                 }
             }
@@ -143,6 +150,8 @@ fun ShopScreen(
 @Composable
 private fun ActiveTripCard(
     trip: TripEntity,
+    formattedTotal: String,
+    formattedExpected: String,
     onClick: () -> Unit
 ) {
     Box(
@@ -192,13 +201,13 @@ private fun ActiveTripCard(
             }
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    "$${String.format("%.2f", trip.actualTotal)}",
+                    formattedTotal,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    "of $${String.format("%.2f", trip.expectedTotal)}",
+                    "of $formattedExpected",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

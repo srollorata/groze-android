@@ -48,10 +48,12 @@ val CATEGORY_OPTIONS = listOf(
 fun AddEditVaultItemSheet(
     item: VaultItemEntity,
     isAdd: Boolean,
+    currency: String,
     onDismiss: () -> Unit,
     onSave: (name: String, category: String, price: Double, unit: String) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val currencySymbol = if (currency.uppercase() == "PHP") "₱" else "$"
 
     var name by remember { mutableStateOf(if (isAdd) "" else item.name) }
     var category by remember { mutableStateOf(if (isAdd) "" else item.category) }
@@ -128,7 +130,7 @@ fun AddEditVaultItemSheet(
             OutlinedTextField(
                 value = price,
                 onValueChange = { price = it },
-                label = { Text("Price ($)") },
+                label = { Text("Price ($currencySymbol)") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
